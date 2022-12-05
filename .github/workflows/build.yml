@@ -1,0 +1,39 @@
+name: Release Golang program
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.19
+          architecture: amd64
+      - name: Build Windows
+        run: |
+          GOOS=windows GOARCH=amd64 go build -o secret-santa
+          tar -czvf secret-santa_windows_amd64.tar.gz secret-santa
+          rm secret-santa
+      - name: Build Linux
+        run: |
+          GOOS=linux GOARCH=amd64 go build -o secret-santa
+          tar -czvf secret-santa_linux_amd64.tar.gz secret-santa
+          rm secret-santa
+      - name: Build MacOS
+        run: |
+          GOOS=darwin GOARCH=amd64 go build -o secret-santa
+          tar -czvf secret-santa_macos_amd64.tar.gz secret-santa
+          rm secret-santa
+      - name: Upload release assets
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: secret-santa_{{ linux, windows, macos }}_amd64.tar.gz
+          asset_name: secret-santa_{{ linux, windows, macos }}_amd64.tar.gz
+          asset_content_type: application/gzip
