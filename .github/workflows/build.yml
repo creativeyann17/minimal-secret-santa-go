@@ -32,6 +32,8 @@ jobs:
           rm secret-santa
       - name: Create Release
         uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
@@ -39,6 +41,8 @@ jobs:
           prerelease: false
       - name: Upload release assets
         uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: secret-santa_{{ linux, windows, macos }}_amd64.tar.gz
