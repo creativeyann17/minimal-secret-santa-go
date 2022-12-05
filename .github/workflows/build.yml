@@ -32,6 +32,8 @@ jobs:
           rm secret-santa
       - name: Upload release assets
         uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: secret-santa_{{ linux, windows, macos }}_amd64.tar.gz
