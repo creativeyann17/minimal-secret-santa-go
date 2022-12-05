@@ -17,7 +17,7 @@ jobs:
       - name: Build Windows
         run: |
           GOOS=windows GOARCH=amd64 go build -o secret-santa
-          tar -czvf secret-santa_windows_amd64.tar.gz secret-santa
+          zip secret-santa_windows_amd64.zip secret-santa
       - name: Build Linux
         run: |
           GOOS=linux GOARCH=amd64 go build -o secret-santa
@@ -36,12 +36,30 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-      - name: Upload release assets
+      - name: Upload release assets Windows
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: secret-santa_{{ linux, windows, macos }}_amd64.tar.gz
-          asset_name: secret-santa_{{ linux, windows, macos }}_amd64.tar.gz
+          asset_path: secret-santa_windows_amd64.zip
+          asset_name: secret-santa_windows_amd64.zip
+          asset_content_type: application/zip
+      - name: Upload release assets Linux
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: secret-santa_linux_amd64.tar.gz
+          asset_name: secret-santa_linux_amd64.tar.gz
+          asset_content_type: application/gzip
+      - name: Upload release assets MacOS
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: secret-santa_macos_amd64.tar.gz
+          asset_name: secret-santa_macos_amd64.tar.gz
           asset_content_type: application/gzip
