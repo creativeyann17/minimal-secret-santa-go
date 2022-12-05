@@ -13,23 +13,19 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: ^1.19
-          architecture: amd64
+          go-version-file: go.mod
       - name: Build Windows
         run: |
           GOOS=windows GOARCH=amd64 go build -o secret-santa
           tar -czvf secret-santa_windows_amd64.tar.gz secret-santa
-          rm secret-santa
       - name: Build Linux
         run: |
           GOOS=linux GOARCH=amd64 go build -o secret-santa
           tar -czvf secret-santa_linux_amd64.tar.gz secret-santa
-          rm secret-santa
       - name: Build MacOS
         run: |
           GOOS=darwin GOARCH=amd64 go build -o secret-santa
           tar -czvf secret-santa_macos_amd64.tar.gz secret-santa
-          rm secret-santa
       - name: Create Release
         uses: actions/create-release@v1
         env:
