@@ -2,8 +2,8 @@ name: Release Golang program
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
 
 jobs:
   build:
@@ -30,10 +30,15 @@ jobs:
           GOOS=darwin GOARCH=amd64 go build -o secret-santa
           tar -czvf secret-santa_macos_amd64.tar.gz secret-santa
           rm secret-santa
+      - name: Create Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
       - name: Upload release assets
         uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: secret-santa_{{ linux, windows, macos }}_amd64.tar.gz
