@@ -16,15 +16,18 @@ jobs:
           go-version: ^1.19
       - name: Build Windows
         run: |
-          GOOS=windows GOARCH=amd64 go build -o secret-santa.exe
+          GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o secret-santa.exe
+          upx -9 secret-santa.exe
           zip secret-santa_windows_amd64.zip secret-santa.exe
       - name: Build Linux
         run: |
-          GOOS=linux GOARCH=amd64 go build -o secret-santa
+          GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o secret-santa
+          upx -9 secret-santa
           tar -czvf secret-santa_linux_amd64.tar.gz secret-santa
       - name: Build MacOS
         run: |
-          GOOS=darwin GOARCH=amd64 go build -o secret-santa
+          GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o secret-santa
+          upx -9 secret-santa
           tar -czvf secret-santa_macos_amd64.tar.gz secret-santa
       - name: Create Release
         id: create_release
