@@ -16,8 +16,8 @@ jobs:
           go-version: ^1.19
       - name: Build Windows
         run: |
-          GOOS=windows GOARCH=amd64 go build -o secret-santa
-          zip secret-santa_windows_amd64.zip secret-santa
+          GOOS=windows GOARCH=amd64 go build -o secret-santa.exe
+          zip secret-santa_windows_amd64.zip secret-santa.exe
       - name: Build Linux
         run: |
           GOOS=linux GOARCH=amd64 go build -o secret-santa
